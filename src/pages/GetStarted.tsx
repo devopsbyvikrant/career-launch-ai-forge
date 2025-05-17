@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,12 +7,19 @@ import UploadResume from '@/components/UploadResume';
 import LinkedInInput from '@/components/LinkedInInput';
 import QAForm, { QAFormData } from '@/components/QAForm';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 const GetStarted: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isProcessing, setIsProcessing] = useState(false);
   
   const handleResumeUpload = (fileData: string) => {
+    if (!user) {
+      navigate('/auth?tab=signup&method=resume');
+      return;
+    }
+    
     setIsProcessing(true);
     
     // Simulate processing delay
@@ -28,6 +34,11 @@ const GetStarted: React.FC = () => {
   };
   
   const handleLinkedInSubmit = (url: string) => {
+    if (!user) {
+      navigate('/auth?tab=signup&method=linkedin');
+      return;
+    }
+    
     setIsProcessing(true);
     
     // Simulate processing delay
@@ -42,6 +53,11 @@ const GetStarted: React.FC = () => {
   };
   
   const handleQAFormComplete = (data: QAFormData) => {
+    if (!user) {
+      navigate('/auth?tab=signup&method=form');
+      return;
+    }
+    
     setIsProcessing(true);
     
     // Simulate processing delay
