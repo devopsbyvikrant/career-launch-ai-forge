@@ -14,33 +14,36 @@ import PortfolioBuilder from "./pages/PortfolioBuilder";
 import ResumeGenerator from "./pages/ResumeGenerator";
 import CoverLetterWriter from "./pages/CoverLetterWriter";
 import InterviewPractice from "./pages/InterviewPractice";
+import { AuthProvider } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/get-started" element={<GetStarted />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/portfolio" element={<PortfolioBuilder />} />
-              <Route path="/resume" element={<ResumeGenerator />} />
-              <Route path="/cover-letter" element={<CoverLetterWriter />} />
-              <Route path="/interview" element={<InterviewPractice />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/get-started" element={<GetStarted />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/portfolio" element={<PortfolioBuilder />} />
+                <Route path="/resume" element={<ResumeGenerator />} />
+                <Route path="/cover-letter" element={<CoverLetterWriter />} />
+                <Route path="/interview" element={<InterviewPractice />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -171,7 +171,7 @@ const PortfolioBuilder: React.FC = () => {
               
               <div className="mt-8 border-t border-border pt-4">
                 <Button asChild variant="outline" className="w-full">
-                  <NavLink to="/profile">Edit Profile Information</NavLink>
+                  <Link to="/profile">Edit Profile Information</Link>
                 </Button>
               </div>
             </CardContent>
