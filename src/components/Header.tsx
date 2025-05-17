@@ -1,12 +1,25 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { NavLink } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
   const isLandingPage = location.pathname === '/';
+  
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast.success('Signed out successfully');
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast.error('Failed to sign out');
+    }
+  };
   
   return (
     <header className="border-b border-border sticky top-0 z-50 bg-background/95 backdrop-blur-sm">
@@ -16,7 +29,7 @@ const Header = () => {
         </NavLink>
         
         <nav className="hidden md:flex space-x-6 mx-4">
-          {!isLandingPage && (
+          {!isLandingPage && user && (
             <>
               <NavLink 
                 to="/dashboard" 
@@ -63,14 +76,34 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center space-x-4">
-          {isLandingPage ? (
-            <Button asChild variant="default" className="bg-purple hover:bg-purple-dark">
-              <NavLink to="/get-started">Get Started</NavLink>
-            </Button>
+          {user ? (
+            <>
+              <Button asChild variant="outline" className="border-purple text-purple hover:bg-purple-light">
+                <NavLink to="/profile">My Profile</NavLink>
+              </Button>
+              <Button 
+                variant="ghost" 
+                onClick={handleSignOut}
+                className="text-gray-600 hover:text-purple"
+              >
+                Sign Out
+              </Button>
+            </>
           ) : (
-            <Button asChild variant="outline" className="border-purple text-purple hover:bg-purple-light">
-              <NavLink to="/profile">My Profile</NavLink>
-            </Button>
+            isLandingPage ? (
+              <>
+                <Button asChild variant="ghost" className="text-gray-600 hover:text-purple">
+                  <NavLink to="/auth">Sign In</NavLink>
+                </Button>
+                <Button asChild variant="default" className="bg-purple hover:bg-purple-dark">
+                  <NavLink to="/auth?tab=signup">Get Started</NavLink>
+                </Button>
+              </>
+            ) : (
+              <Button asChild variant="default" className="bg-purple hover:bg-purple-dark">
+                <NavLink to="/auth">Sign In</NavLink>
+              </Button>
+            )
           )}
         </div>
       </div>

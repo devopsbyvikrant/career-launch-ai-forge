@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -14,6 +13,7 @@ import PortfolioBuilder from "./pages/PortfolioBuilder";
 import ResumeGenerator from "./pages/ResumeGenerator";
 import CoverLetterWriter from "./pages/CoverLetterWriter";
 import InterviewPractice from "./pages/InterviewPractice";
+import Auth from "./pages/Auth";
 import { AuthProvider } from "./hooks/useAuth";
 
 const queryClient = new QueryClient();
@@ -30,6 +30,7 @@ const App = () => (
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/auth" element={<Auth />} />
                 <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/portfolio" element={<PortfolioBuilder />} />
