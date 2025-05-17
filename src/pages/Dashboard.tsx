@@ -4,6 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { NavLink } from 'react-router-dom';
 import { useProfileData } from '@/hooks/useProfileData';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 const Dashboard: React.FC = () => {
   const { profileData, isLoading } = useProfileData();
@@ -13,7 +14,7 @@ const Dashboard: React.FC = () => {
       <div className="container mx-auto py-12 px-4 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading your dashboard...</p>
         </div>
       </div>
     );
@@ -21,25 +22,30 @@ const Dashboard: React.FC = () => {
   
   return (
     <div className="container mx-auto py-8 px-4 animate-fade-in">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Welcome, {profileData?.fullName || 'User'}</h1>
-        <p className="text-gray-600">
-          Let's build your professional brand and help you land your dream job.
-        </p>
+      <div className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">
+            Welcome, <span className="illuminated-text-purple">{profileData?.fullName || 'User'}</span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Let's build your professional brand and help you land your dream job.
+          </p>
+        </div>
+        <ThemeToggle />
       </div>
       
       {/* Profile Completion Card */}
-      <Card className="p-6 bg-purple-light border-purple border mb-8">
+      <Card className="p-6 bg-purple-light dark:bg-purple-dark/20 border-purple/50 mb-8 glowing-border">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h2 className="text-xl font-semibold">Your Profile: 70% Complete</h2>
-            <p className="text-gray-700">Complete your profile to get the most out of PortfolioAI</p>
+            <h2 className="text-xl font-semibold illuminated-text">Your Profile: 70% Complete</h2>
+            <p className="text-gray-700 dark:text-gray-300">Complete your profile to get the most out of PortfolioAI</p>
           </div>
-          <Button asChild className="bg-purple hover:bg-purple-dark">
+          <Button asChild className="bg-purple hover:bg-purple-dark animate-pulse-glow">
             <NavLink to="/profile">Complete Profile</NavLink>
           </Button>
         </div>
-        <div className="mt-4 h-2 w-full bg-white rounded-full">
+        <div className="mt-4 h-2 w-full bg-white dark:bg-gray-700 rounded-full">
           <div className="bg-purple h-2 rounded-full" style={{ width: '70%' }}></div>
         </div>
       </Card>
@@ -55,10 +61,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Portfolio Builder</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Create a professional portfolio website to showcase your work and experience.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/portfolio">Create Portfolio</NavLink>
             </Button>
           </div>
@@ -73,10 +79,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Resume Generator</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Generate an ATS-friendly resume tailored for your target roles.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/resume">Generate Resume</NavLink>
             </Button>
           </div>
@@ -91,10 +97,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Cover Letter Writer</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Create personalized cover letters for any job application in seconds.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/cover-letter">Write Cover Letter</NavLink>
             </Button>
           </div>
@@ -109,10 +115,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Resume Optimizer</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Get feedback on your resume and optimize it for specific job postings.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/resume-optimizer">Optimize Resume</NavLink>
             </Button>
           </div>
@@ -127,10 +133,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Mock Interviewer</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Practice for interviews with our AI interviewer and receive real-time feedback.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/interview">Practice Interviews</NavLink>
             </Button>
           </div>
@@ -145,10 +151,10 @@ const Dashboard: React.FC = () => {
               </svg>
             </div>
             <h3 className="text-xl font-bold mb-2">Job Alerts</h3>
-            <p className="text-gray-600 mb-4 flex-grow">
+            <p className="text-gray-600 dark:text-gray-400 mb-4 flex-grow">
               Get personalized job recommendations that match your skills and experience.
             </p>
-            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light">
+            <Button asChild variant="outline" className="w-full border-purple text-purple hover:bg-purple-light dark:hover:bg-purple-dark/30">
               <NavLink to="/jobs">View Jobs</NavLink>
             </Button>
           </div>
@@ -157,10 +163,10 @@ const Dashboard: React.FC = () => {
       
       {/* Recent Activity */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold mb-4">Recent Activity</h2>
-        <Card className="p-6">
-          <div className="text-center py-8 text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <h2 className="text-2xl font-bold mb-4 illuminated-text">Recent Activity</h2>
+        <Card className="p-6 glass-morphism">
+          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto mb-4 text-gray-300 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <p className="text-lg mb-2">No recent activity</p>
