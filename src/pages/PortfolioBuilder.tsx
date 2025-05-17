@@ -1,183 +1,209 @@
-
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useProfileData } from '@/hooks/useProfileData';
+import { generatePortfolio, getLatestResume } from '@/api/resume';
 import { toast } from 'sonner';
+
+interface LocationState {
+  resumeData: any;
+  portfolioData: any;
+}
+
+interface PortfolioTemplate {
+  html: string;
+  style: string;
+  preview_url: string;
+}
+
+interface PortfolioData {
+  minimal: PortfolioTemplate;
+  creative: PortfolioTemplate;
+  professional: PortfolioTemplate;
+  dynamic: PortfolioTemplate;
+}
 
 const PortfolioBuilder: React.FC = () => {
   const navigate = useNavigate();
-  const { profileData, isLoading } = useProfileData();
-  const [selectedTemplate, setSelectedTemplate] = useState('minimal');
+  const location = useLocation();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [resumeData, setResumeData] = useState<any>(null);
+  const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   
-  const templateOptions = [
-    { id: 'minimal', name: 'Minimal', description: 'Clean, simple design with focus on content' },
-    { id: 'modern', name: 'Modern', description: 'Contemporary layout with bold typography' },
-    { id: 'creative', name: 'Creative', description: 'Unique design with creative elements' },
-    { id: 'professional', name: 'Professional', description: 'Traditional portfolio for corporate roles' },
-  ];
-  
-  const handleGenerate = () => {
-    if (!profileData) {
-      toast.error('Please complete your profile first.');
-      navigate('/profile');
+  useEffect(() => {
+    const fetchLatestResume = async () => {
+      try {
+        const state = location.state as LocationState;
+        if (state?.resumeData) {
+          setResumeData(state.resumeData);
+          if (state.portfolioData) {
+            setPortfolioData(state.portfolioData);
+            sessionStorage.setItem('portfolioData', JSON.stringify(state.portfolioData));
+            toast.success('Portfolio data loaded successfully!');
+          }
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await getLatestResume();
+        if (response.status === 'success' && response.data) {
+          setResumeData(response.data.extracted_data);
+          toast.success('Resume data loaded from database');
+        } else {
+          toast.error('No resume found. Please upload a resume first.');
+          navigate('/upload-resume');
+        }
+      } catch (error) {
+        console.error('Error fetching resume:', error);
+        toast.error('Failed to load resume data');
+        navigate('/upload-resume');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLatestResume();
+  }, [location, navigate]);
+
+  const handleGenerate = async () => {
+    if (!resumeData) {
+      toast.error('Please upload a resume first.');
+      navigate('/upload-resume');
       return;
     }
     
     setIsGenerating(true);
     
-    // Simulate portfolio generation
-    setTimeout(() => {
+    try {
+      const result = await generatePortfolio(resumeData);
+      const portfolioData = result.data.data;
+      setPortfolioData(portfolioData);
+      
+      // Store portfolio data in session storage
+      sessionStorage.setItem('portfolioData', JSON.stringify(portfolioData));
+      
+      toast.success('Portfolio generated successfully! Click any of the buttons below to view your portfolios.');
+    } catch (error) {
+      toast.error('Failed to generate portfolio. Please try again.');
+      console.error('Error generating portfolio:', error);
+    } finally {
       setIsGenerating(false);
-      toast.success('Portfolio generated successfully!');
-      navigate('/portfolio-preview');
-    }, 3000);
+    }
   };
-  
+
+  const handleViewPortfolio = (style: string) => {
+    if (!portfolioData) {
+      toast.error('No portfolio data available');
+      return;
+    }
+    navigate(`/portfolio/${style}`);
+  };
+
   if (isLoading) {
     return (
-      <div className="container mx-auto py-12 px-4 flex items-center justify-center min-h-[60vh]">
+      <div className="container mx-auto py-8 px-4 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple mb-4"></div>
-          <p className="text-gray-600">Loading portfolio builder...</p>
+          <p className="text-gray-600">Loading resume data...</p>
         </div>
       </div>
     );
   }
-  
+
   return (
     <div className="container mx-auto py-8 px-4 animate-fade-in">
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">AI Portfolio Builder</h1>
         <p className="text-gray-600">
-          Create a professional portfolio website in minutes
+          Create professional portfolio websites in minutes
         </p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Choose a Template</CardTitle>
-              <CardDescription>
-                Select a template that best represents your professional style
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="minimal" onValueChange={setSelectedTemplate}>
-                <TabsList className="grid grid-cols-4 mb-8">
-                  {templateOptions.map(template => (
-                    <TabsTrigger key={template.id} value={template.id}>
-                      {template.name}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-                
-                {templateOptions.map(template => (
-                  <TabsContent key={template.id} value={template.id} className="space-y-4">
-                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
-                      <div className="w-full h-full flex items-center justify-center bg-purple-light/30">
-                        <div className="text-center">
-                          <h3 className="text-xl font-medium text-purple">{template.name}</h3>
-                          <p className="text-gray-600 text-sm mt-2">{template.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <p className="text-gray-600">
-                      {template.description} template with sections for your experience, skills, projects, and education.
-                    </p>
-                  </TabsContent>
-                ))}
-              </Tabs>
-              
-              <div className="mt-8">
-                <Button 
-                  onClick={handleGenerate} 
-                  className="w-full bg-purple hover:bg-purple-dark"
-                  disabled={isGenerating}
-                >
-                  {isGenerating ? (
-                    <>
-                      <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-                      Generating Portfolio...
-                    </>
-                  ) : (
-                    'Generate Portfolio'
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        
-        <div className="lg:col-span-1">
-          <Card>
-            <CardHeader>
-              <CardTitle>Portfolio Preview</CardTitle>
-              <CardDescription>
-                Based on your profile information
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500">Name</h4>
-                  <p className="font-medium">{profileData?.fullName || 'Not provided'}</p>
+      {!portfolioData && (
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Generate Your Portfolio</CardTitle>
+            <CardDescription>
+              Create four unique portfolio styles based on your resume
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              onClick={handleGenerate} 
+              className="w-full bg-purple hover:bg-purple-dark text-white"
+              disabled={isGenerating}
+            >
+              {isGenerating ? (
+                <>
+                  <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                  Generating Portfolios...
+                </>
+              ) : (
+                'Generate Portfolios'
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {portfolioData && (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {Object.entries(portfolioData).map(([style, template]) => (
+              <Card key={style} className="overflow-hidden">
+                <div className="aspect-video bg-gray-100 relative">
+                  <iframe
+                    srcDoc={template.html}
+                    className="w-full h-full"
+                    title={`${style} Portfolio Preview`}
+                  />
                 </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500">Target Role</h4>
-                  <p>{profileData?.targetRole || 'Not specified'}</p>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500">Skills</h4>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {profileData?.skills.map((skill, index) => (
-                      <span key={index} className="bg-purple-light text-purple-dark px-2 py-1 rounded-full text-xs">
-                        {skill}
-                      </span>
-                    ))}
+                <CardContent className="p-4">
+                  <h3 className="text-lg font-semibold capitalize mb-2">{style}</h3>
+                  <p className="text-sm text-muted-foreground mb-4">{template.style}</p>
+                  <div className="space-y-2">
+                    <Button
+                      onClick={() => handleViewPortfolio(style)}
+                      className="w-full bg-purple hover:bg-purple-dark text-white"
+                    >
+                      View Full Portfolio
+                    </Button>
+                    <Button
+                      onClick={() => window.open(`/portfolio/${style}`, '_blank')}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Open in New Tab
+                    </Button>
                   </div>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500">Work Experience</h4>
-                  <ul className="mt-1 space-y-2">
-                    {profileData?.workExperience.map((exp, index) => (
-                      <li key={index} className="text-sm">
-                        <span className="font-medium">{exp.position}</span>
-                        <span className="text-gray-500"> at {exp.company}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div>
-                  <h4 className="text-sm font-medium text-gray-500">Education</h4>
-                  <ul className="mt-1 space-y-2">
-                    {profileData?.education.map((edu, index) => (
-                      <li key={index} className="text-sm">
-                        <span className="font-medium">{edu.degree}</span>
-                        <span className="text-gray-500"> from {edu.institution}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="mt-8 border-t border-border pt-4">
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/profile">Edit Profile Information</Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center space-y-4">
+            <div className="flex flex-wrap justify-center gap-4">
+              {Object.keys(portfolioData).map((style) => (
+                <Button
+                  key={style}
+                  onClick={() => handleViewPortfolio(style)}
+                  className="bg-purple hover:bg-purple-dark text-white"
+                >
+                  View {style.charAt(0).toUpperCase() + style.slice(1)} Portfolio
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
+              ))}
+            </div>
+            <Button
+              onClick={handleGenerate}
+              variant="outline"
+              className="mt-4"
+            >
+              Regenerate Portfolios
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

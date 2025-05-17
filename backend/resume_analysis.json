@@ -1,0 +1,155 @@
+{
+  "status": "partial_success",
+  "message": "Resume processed but storage failed",
+  "data": {
+    "personalInfo": {
+      "name": "Vikrant Nandkumar Nalawade",
+      "email": "vikrant.nalawade@ashnik.com",
+      "phone": "(+91) 7718949194",
+      "location": "",
+      "linkedin": "linkedin.com/in/vikrantnalawade/",
+      "portfolio": ""
+    },
+    "summary": {
+      "professional_summary": "Senior DevOps Engineer with extensive experience in container orchestration, cloud automation, CI/CD processes, and system administration. Proven track record in deploying and managing Kubernetes and OpenShift clusters along with strong capabilities in monitoring, observability, and optimizing infrastructure for high-availability and performance.",
+      "key_achievements": [
+        "Consistently received highest performance ratings (A band) in annual appraisal for 3 consecutive years.",
+        "Reduced cloud resource costs significantly through automation and efficient workflows.",
+        "Successfully implemented rigorous monitoring and logging solutions leading to enhanced operational insights."
+      ],
+      "core_competencies": [
+        "Container Orchestration",
+        "Cloud Solutions",
+        "CI/CD Implementation",
+        "Monitoring & Observability",
+        "Infrastructure as Code (IaC)",
+        "Scripting & Automation"
+      ]
+    },
+    "education": [
+      {
+        "degree": "B.E. in Computer Engineering",
+        "institution": "University of Mumbai",
+        "year": "2021",
+        "gpa": "7.4 / 10",
+        "relevant_coursework": [],
+        "achievements": []
+      },
+      {
+        "degree": "Standard XII - Science",
+        "institution": "Maharashtra State Board",
+        "year": "2017",
+        "gpa": "77.54%",
+        "relevant_coursework": [],
+        "achievements": []
+      },
+      {
+        "degree": "Standard X",
+        "institution": "Maharashtra State Board",
+        "year": "2015",
+        "gpa": "92.00%",
+        "relevant_coursework": [],
+        "achievements": []
+      }
+    ],
+    "workExperience": [
+      {
+        "company": "Ashnik Technology Solutions",
+        "position": "Senior DevOps Engineer",
+        "duration": "Nov 2024 \u2013 Present",
+        "location": "",
+        "achievements": [],
+        "responsibilities": [
+          "Managed Kubernetes and Rancher cluster for enterprise-grade container orchestration.",
+          "Deployed and optimized NGINX Plus Ingress Controller with App Protect WAF.",
+          "Enabled cluster-wide monitoring using Prometheus and Grafana.",
+          "Implemented ELK stack for log aggregation and real-time analysis."
+        ],
+        "technologies_used": [
+          "Kubernetes",
+          "Rancher",
+          "AWS",
+          "NGINX",
+          "Prometheus",
+          "Grafana",
+          "ELK Stack",
+          "Terraform",
+          "Ansible"
+        ],
+        "quantifiable_results": []
+      },
+      {
+        "company": "Tata Consultancy Services, Mumbai",
+        "position": "System Engineer",
+        "duration": "July 2021 - Nov 2024",
+        "location": "Mumbai",
+        "achievements": [],
+        "responsibilities": [
+          "Led POC to create an in-house disconnected OpenShift Cluster for BaNCS2.0 product.",
+          "Collaborated in CI/CD pipeline development using various DevOps tools.",
+          "Managed and administered 100+ servers across multiple operating systems."
+        ],
+        "technologies_used": [
+          "OpenShift",
+          "Kubernetes",
+          "Docker",
+          "Jenkins",
+          "Ansible",
+          "Terraform"
+        ],
+        "quantifiable_results": [
+          "Reduced environment setup time from 3 days to 6 hours for over 50 banking clients.",
+          "Fixed 98% of bugs in automated delivery systems, saving 30% developer time."
+        ]
+      }
+    ],
+    "skills": {
+      "technical": [
+        "Kubernetes",
+        "OpenShift",
+        "AWS",
+        "Terraform",
+        "Ansible",
+        "Prometheus",
+        "Grafana",
+        "ELK Stack",
+        "Jenkins",
+        "Docker"
+      ],
+      "soft": [],
+      "certifications": [
+        "AWS Certified Solutions Architect \u2013 Associate (SAA-C03)",
+        "Microsoft Certified: Azure Administrator Associate (AZ-104)",
+        "Microsoft Certified: Azure Developer Associate (AZ-204)"
+      ],
+      "languages": [
+        "Python",
+        "Perl",
+        "Shell"
+      ]
+    },
+    "projects": [],
+    "ats_optimization": {
+      "keywords": [
+        "DevOps",
+        "Kubernetes",
+        "OpenShift",
+        "AWS",
+        "Terraform",
+        "Monitoring",
+        "CI/CD",
+        "Docker",
+        "Ansible"
+      ],
+      "skills_alignment": [
+        "Cloud Computing",
+        "Containerization",
+        "Scripting",
+        "Infrastructure Management"
+      ],
+      "formatting_score": 0,
+      "content_score": 0,
+      "suggestions": []
+    }
+  }
+}

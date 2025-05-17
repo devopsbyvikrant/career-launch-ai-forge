@@ -1,0 +1,222 @@
+{
+  "status": "partial_success",
+  "message": "Resume processed but storage failed",
+  "data": {
+    "personalInfo": {
+      "name": "Vikrant Nandkumar Nalawade",
+      "email": "vikrant.nalawade@ashnik.com",
+      "phone": "(+91) 7718949194",
+      "location": "",
+      "linkedin": "linkedin.com/in/vikrantnalawade/",
+      "portfolio": "",
+      "github": "",
+      "other_profiles": []
+    },
+    "summary": {
+      "professional_summary": "",
+      "key_achievements": [],
+      "core_competencies": [],
+      "career_objectives": [],
+      "value_proposition": ""
+    },
+    "education": [
+      {
+        "degree": "B.E. in Computer Engineering",
+        "institution": "University of Mumbai",
+        "year": "May 2017 - Jun 2021",
+        "gpa": "7.4 / 10",
+        "relevant_coursework": [],
+        "achievements": [],
+        "extracurricular": [],
+        "honors": [],
+        "thesis": "",
+        "specialization": ""
+      },
+      {
+        "degree": "Standard XII - Science",
+        "institution": "Maharashtra State Board",
+        "year": "Jun 2015 - Mar 2017",
+        "gpa": "Score: 77.54%",
+        "relevant_coursework": [],
+        "achievements": [],
+        "extracurricular": [],
+        "honors": [],
+        "thesis": "",
+        "specialization": ""
+      },
+      {
+        "degree": "Standard X",
+        "institution": "Maharashtra State Board",
+        "year": "Jun 2014 - Mar 2015",
+        "gpa": "Score: 92.00%",
+        "relevant_coursework": [],
+        "achievements": [],
+        "extracurricular": [],
+        "honors": [],
+        "thesis": "",
+        "specialization": ""
+      }
+    ],
+    "workExperience": [
+      {
+        "company": "Ashnik Technology Solutions",
+        "position": "Senior DevOps Engineer",
+        "duration": "Nov 2024 – Present",
+        "location": "",
+        "achievements": [],
+        "responsibilities": [
+          "Installed, configured, and managed Rancher Kubernetes clusters for enterprise-grade container orchestration.",
+          "Deployed and maintained NGINX Plus Ingress Controller with App Protect WAF for secure and optimized traffic routing.",
+          "Set up cert-manager for SSL/TLS certificate automation, ensuring secure ingress for applications.",
+          "Enabled cluster-wide monitoring and observability using Prometheus and Grafana, providing real-time insights into resource utilization, performance metrics, and alerts.",
+          "Integrated Loki and Promtail for centralized logging, making log analysis seamless across Kubernetes workloads.",
+          "Implemented Elasticsearch, Logstash, and Kibana (ELK) for advanced log aggregation and real-time log analysis.",
+          "Configured and optimized NGINX Plus as a Load Balancer, Reverse Proxy, and Web Server, ensuring high availability, SSL termination, and efficient traffic management.",
+          "Debugged and fine-tuned NGINX performance, optimizing worker processes, caching, proxy buffering, and connection handling for high-traffic environments.",
+          "Designed and implemented CI/CD pipelines using Jenkins, automating application deployment and infrastructure provisioning.",
+          "Managed AWS cloud resources with Terraform and Ansible, automating EC2 instance provisioning, IAM roles, VPC setup, and Kubernetes cluster deployments.",
+          "Optimized build and deployment workflows by integrating Docker, Kubernetes, Helm, Nexus, and AWS EKS, reducing deployment time and improving system reliability."
+        ],
+        "technologies_used": [
+          "Rancher Kubernetes",
+          "NGINX Plus",
+          "cert-manager",
+          "Prometheus",
+          "Grafana",
+          "Loki",
+          "Promtail",
+          "Elasticsearch",
+          "Logstash",
+          "Kibana",
+          "Docker",
+          "Kubernetes",
+          "Helm",
+          "Nexus",
+          "AWS EKS",
+          "Terraform",
+          "Ansible",
+          "Jenkins"
+        ],
+        "quantifiable_results": [],
+        "key_projects": [],
+        "team_size": "",
+        "reporting_to": "",
+        "industry": "Technology Solutions",
+        "company_size": "",
+        "impact_metrics": []
+      },
+      {
+        "company": "Tata Consultancy Services, Mumbai",
+        "position": "System Engineer",
+        "duration": "July 2021 - Nov 2024",
+        "location": "Mumbai",
+        "achievements": [],
+        "responsibilities": [
+          "Led the POC to create inhouse Disconnected User-provisioned OpenShift Cluster for Offshore development and deployment for BaNCS2.0 Product.",
+          "Implemented cost-saving initiative by creating a disconnected mirror registry/repository to save images and artifacts.",
+          "Configured HA-Proxy, DNS, NTP, NFS supplementary to OpenShift Cluster.",
+          "Guided and assisted various banking projects for OpenShift/Kubernetes administration/development, containerization of various Application.",
+          "Collaborated in Building CI/CD pipelines using DevOps tools.",
+          "Managed and Administer 100+ Servers used by TCS-FS Products and Offshore teams.",
+          "Led and successfully performed initiative of in place RHEL OS Upgrade in disconnected environment.",
+          "Actively involved in Administrative activities – OS installation, Virtualization, Network & Security Configuration, File System & Storage Management, Package & Service Management, etc.",
+          "Installed and Managed Middleware Platforms on various platforms.",
+          "Created, Managed and Monitored Databases."
+        ],
+        "technologies_used": [
+          "OpenShift",
+          "Kubernetes",
+          "Docker",
+          "Git",
+          "Jenkins",
+          "Linux Administration",
+          "VM Creation",
+          "DevOps",
+          "HA-Proxy",
+          "DNS",
+          "NTP",
+          "NFS",
+          "Prometheus",
+          "Grafana",
+          "ELK",
+          "Ansible",
+          "RHEL",
+          "IBM AIX",
+          "HP-UX",
+          "Solaris",
+          "Windows",
+          "Oracle WebLogic",
+          "IBM WebSphere Application Server",
+          "JBoss EAP",
+          "Oracle (CDB/PDB)",
+          "IBM DB2",
+          "Postgres",
+          "MS SQL"
+        ],
+        "quantifiable_results": [],
+        "key_projects": [],
+        "team_size": "",
+        "reporting_to": "",
+        "industry": "IT Services",
+        "company_size": "",
+        "impact_metrics": []
+      }
+    ],
+    "skills": {
+      "technical": [
+        "OpenShift Cluster (Creation/Development/Administration)",
+        "Kubernetes (Development/Administration)",
+        "AWS - EKS, EC2, VPC, IAM, etc",
+        "Linux Administration",
+        "Iac - Terraform & Ansible",
+        "Prometheus & Grafana",
+        "ELK Stack",
+        "AWS Cloudtrail & Cloudwatch",
+        "VPC Flow Logs",
+        "Python",
+        "Perl & Shell Automation",
+        "Git",
+        "Jenkins"
+      ],
+      "soft": [],
+      "certifications": [
+        "AWS Certified: Solutions Architect – Associate (SAA-C03)",
+        "Microsoft Certified: Azure Administrator Associate (AZ-104)",
+        "Microsoft Certified: Azure Developer Associate (AZ-204)"
+      ],
+      "languages": [],
+      "tools": [],
+      "methodologies": [],
+      "domain_knowledge": [],
+      "emerging_technologies": []
+    },
+    "projects": [],
+    "career_analysis": {
+      "career_progression": "",
+      "industry_expertise": [],
+      "leadership_qualities": [],
+      "innovation_contributions": [],
+      "problem_solving_abilities": [],
+      "adaptability_indicators": []
+    },
+    "ats_optimization": {
+      "keywords": [],
+      "skills_alignment": [],
+      "formatting_score": 0,
+      "content_score": 0,
+      "suggestions": [],
+      "keyword_density": {},
+      "missing_keywords": [],
+      "formatting_issues": [],
+      "content_gaps": []
+    },
+    "improvement_suggestions": {
+      "content_enhancements": [],
+      "formatting_improvements": [],
+      "skill_gaps": [],
+      "achievement_quantification": [],
+      "keyword_optimization": [],
+      "career_development": []
+    }
+  }
+}

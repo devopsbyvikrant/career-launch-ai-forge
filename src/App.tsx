@@ -15,6 +15,9 @@ import CoverLetterWriter from "./pages/CoverLetterWriter";
 import InterviewPractice from "./pages/InterviewPractice";
 import Auth from "./pages/Auth";
 import { AuthProvider } from "./hooks/useAuth";
+import ResumeViewer from "./components/ResumeViewer";
+import { ResumeAnalysis } from '@/pages/ResumeAnalysis';
+import PortfolioView from '@/pages/PortfolioView';
 
 const queryClient = new QueryClient();
 
@@ -33,10 +36,13 @@ const App = () => (
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/get-started" element={<GetStarted />} />
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/portfolio" element={<PortfolioBuilder />} />
+                <Route path="/portfolio-builder" element={<PortfolioBuilder />} />
+                <Route path="/portfolio/:style" element={<PortfolioView />} />
                 <Route path="/resume" element={<ResumeGenerator />} />
                 <Route path="/cover-letter" element={<CoverLetterWriter />} />
                 <Route path="/interview" element={<InterviewPractice />} />
+                <Route path="/resume-viewer" element={<ResumeViewer />} />
+                <Route path="/resume-analysis" element={<ResumeAnalysis />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>

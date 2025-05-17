@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 interface LinkedInInputProps {
   onSubmit: (url: string) => void;
@@ -10,31 +9,100 @@ interface LinkedInInputProps {
 
 const LinkedInInput: React.FC<LinkedInInputProps> = ({ onSubmit }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { signIn } = useAuth();
+
+  useEffect(() => {
+    // Handle OAuth callback
+    const handleCallback = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get('code');
+      const error = urlParams.get('error');
+
+      if (error) {
+        toast.error('LinkedIn authentication failed: ' + error);
+        return;
+      }
+
+      if (code) {
+        setIsLoading(true);
+        try {
+          // Exchange code for access token
+          const response = await fetch('http://localhost:8000/api/linkedin/callback', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Failed to authenticate with LinkedIn');
+          }
+
+          const data = await response.json();
+          
+          // Sign in with the LinkedIn data
+          const { error: signInError } = await signIn(data.email, data.password);
+          if (signInError) throw signInError;
+
+          toast.success('Successfully authenticated with LinkedIn');
+          onSubmit(data.linkedinUrl);
+        } catch (error) {
+          console.error('LinkedIn auth error:', error);
+          toast.error(error instanceof Error ? error.message : 'Failed to authenticate with LinkedIn');
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    handleCallback();
+  }, [signIn, onSubmit]);
 
   const handleLinkedInAuth = async () => {
     setIsLoading(true);
     
     try {
-      // In a real app, this would open LinkedIn OAuth flow
-      const linkedInAuthWindow = window.open(
-        'https://www.linkedin.com/oauth/v2/authorization' +
-        '?response_type=code' +
-        '&client_id=YOUR_CLIENT_ID' +
-        '&redirect_uri=YOUR_REDIRECT_URI' +
-        '&scope=r_liteprofile r_emailaddress',
-        'LinkedIn Login',
-        'width=600,height=600'
-      );
+      const clientId = import.meta.env.VITE_LINKEDIN_CLIENT_ID;
+      
+      if (!clientId) {
+        throw new Error('LinkedIn Client ID is not configured');
+      }
 
-      // Simulate OAuth success for demo
-      setTimeout(() => {
-        setIsLoading(false);
-        if (linkedInAuthWindow) linkedInAuthWindow.close();
-        onSubmit('linkedin-auth-success');
-      }, 2000);
+      const redirectUri = `${window.location.origin}/auth/linkedin/callback`;
+      const scope = 'r_liteprofile r_emailaddress';
+      
+      // First check if LinkedIn is accessible
+      try {
+        const checkResponse = await fetch('https://www.linkedin.com/robots.txt');
+        if (!checkResponse.ok) {
+          throw new Error('LinkedIn services are currently unavailable');
+        }
+      } catch (error) {
+        throw new Error('Unable to connect to LinkedIn. Please try again later.');
+      }
+      
+      const authUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
+      
+      // Open in a new window instead of redirecting
+      const authWindow = window.open(authUrl, 'LinkedIn Login', 'width=600,height=600');
+      
+      if (!authWindow) {
+        throw new Error('Please allow popups for LinkedIn authentication');
+      }
+
+      // Check if the window was closed
+      const checkWindow = setInterval(() => {
+        if (authWindow.closed) {
+          clearInterval(checkWindow);
+          setIsLoading(false);
+        }
+      }, 1000);
+
     } catch (error) {
       console.error('LinkedIn auth error:', error);
-      toast.error('Failed to authenticate with LinkedIn');
+      toast.error(error instanceof Error ? error.message : 'Failed to start LinkedIn authentication');
       setIsLoading(false);
     }
   };

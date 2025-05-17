@@ -17,9 +17,51 @@ const Auth: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [errors, setErrors] = useState<{
+    email?: string;
+    password?: string;
+    fullName?: string;
+  }>({});
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (password: string) => {
+    return password.length >= 6;
+  };
+
+  const validateForm = (isSignUp: boolean = false) => {
+    const newErrors: typeof errors = {};
+
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!password) {
+      newErrors.password = 'Password is required';
+    } else if (!validatePassword(password)) {
+      newErrors.password = 'Password must be at least 6 characters long';
+    }
+
+    if (isSignUp && !fullName) {
+      newErrors.fullName = 'Full name is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -30,7 +72,15 @@ const Auth: React.FC = () => {
       navigate('/dashboard');
     } catch (error) {
       console.error('Error signing in:', error);
-      toast.error('Failed to sign in. Please check your credentials.');
+      if (error instanceof Error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast.error('Invalid email or password');
+        } else {
+          toast.error(error.message);
+        }
+      } else {
+        toast.error('Failed to sign in. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -38,30 +88,41 @@ const Auth: React.FC = () => {
 
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!validateForm(true)) {
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const { error } = await signUp(email, password, { full_name: fullName });
       if (error) throw error;
       
-      toast.success('Account created successfully!');
+      toast.success('Account created successfully! Please check your email to verify your account.');
       navigate('/get-started');
     } catch (error) {
       console.error('Error signing up:', error);
-      toast.error('Failed to create account. Please try again.');
+      if (error instanceof Error) {
+        if (error.message.includes('already registered')) {
+          toast.error('An account with this email already exists');
+        } else {
+          toast.error(error.message);
+        }
+      } else {
+        toast.error('Failed to create account. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleResumeAuth = (fileData: string) => {
-    // In a real app, this would process the resume and create an account
     toast.success('Resume processed successfully!');
     navigate('/get-started');
   };
 
   const handleLinkedInAuth = (url: string) => {
-    // In a real app, this would authenticate with LinkedIn
     toast.success('LinkedIn authentication successful!');
     navigate('/get-started');
   };
@@ -92,9 +153,16 @@ const Auth: React.FC = () => {
                       type="email"
                       placeholder="you@example.com"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setErrors(prev => ({ ...prev, email: undefined }));
+                      }}
+                      className={errors.email ? 'border-red-500' : ''}
                       required
                     />
+                    {errors.email && (
+                      <p className="text-sm text-red-500">{errors.email}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="password">Password</Label>
@@ -102,16 +170,30 @@ const Auth: React.FC = () => {
                       id="password"
                       type="password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setErrors(prev => ({ ...prev, password: undefined }));
+                      }}
+                      className={errors.password ? 'border-red-500' : ''}
                       required
                     />
+                    {errors.password && (
+                      <p className="text-sm text-red-500">{errors.password}</p>
+                    )}
                   </div>
                   <Button
                     type="submit"
                     className="w-full bg-purple hover:bg-purple-dark"
                     disabled={isLoading}
                   >
-                    {isLoading ? 'Signing in...' : 'Sign In'}
+                    {isLoading ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                        Signing in...
+                      </div>
+                    ) : (
+                      'Sign In'
+                    )}
                   </Button>
                 </form>
 
@@ -177,9 +259,16 @@ const Auth: React.FC = () => {
                           id="fullName"
                           placeholder="John Doe"
                           value={fullName}
-                          onChange={(e) => setFullName(e.target.value)}
+                          onChange={(e) => {
+                            setFullName(e.target.value);
+                            setErrors(prev => ({ ...prev, fullName: undefined }));
+                          }}
+                          className={errors.fullName ? 'border-red-500' : ''}
                           required
                         />
+                        {errors.fullName && (
+                          <p className="text-sm text-red-500">{errors.fullName}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="signupEmail">Email</Label>
@@ -188,9 +277,16 @@ const Auth: React.FC = () => {
                           type="email"
                           placeholder="you@example.com"
                           value={email}
-                          onChange={(e) => setEmail(e.target.value)}
+                          onChange={(e) => {
+                            setEmail(e.target.value);
+                            setErrors(prev => ({ ...prev, email: undefined }));
+                          }}
+                          className={errors.email ? 'border-red-500' : ''}
                           required
                         />
+                        {errors.email && (
+                          <p className="text-sm text-red-500">{errors.email}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="signupPassword">Password</Label>
@@ -198,16 +294,30 @@ const Auth: React.FC = () => {
                           id="signupPassword"
                           type="password"
                           value={password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setErrors(prev => ({ ...prev, password: undefined }));
+                          }}
+                          className={errors.password ? 'border-red-500' : ''}
                           required
                         />
+                        {errors.password && (
+                          <p className="text-sm text-red-500">{errors.password}</p>
+                        )}
                       </div>
                       <Button
                         type="submit"
                         className="w-full bg-purple hover:bg-purple-dark"
                         disabled={isLoading}
                       >
-                        {isLoading ? 'Creating Account...' : 'Create Account'}
+                        {isLoading ? (
+                          <div className="flex items-center">
+                            <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                            Creating Account...
+                          </div>
+                        ) : (
+                          'Create Account'
+                        )}
                       </Button>
                     </form>
                   </TabsContent>
